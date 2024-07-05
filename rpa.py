@@ -13,7 +13,10 @@ driver.get(url)
 
 pais = ['China','Cuba','Laos','Vietnã','Venezuela']
 #Pesquisar na lista o pais 
-driver.find_element(By.XPATH,'//*[@id="filterField"]').send_keys("Brasil")
-
-#Pegar as informações no do pais
-#Transforma em lista
+for i in pais:
+    driver.find_element(By.XPATH,'//*[@id="filterField"]').send_keys(i)
+    table_html = driver.find_element(By.ID, 'table').get_attribute('outerHTML')
+    df = pd.read_html(table_html)[0]
+    df.to_csv('tabela_extraida.csv', index=False)
+    print(df)
+    driver.find_element(By.XPATH,'//*[@id="filterField"]').clear()
